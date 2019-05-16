@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdkproject.mdk2019.dao.TbDeptupDao">
+    <resultMap id="BaseResultMap" type="com.mdkproject.mdk2019.entity.TbDeptup">
+        <id column="dept_id" jdbcType="INTEGER" property="deptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="dept_code" jdbcType="VARCHAR" property="deptCode"/>
+        <result column="dept_imgurl" jdbcType="VARCHAR" property="deptImgurl"/>
+        <result column="dept_shenhe" jdbcType="VARCHAR" property="deptShenhe"/>
+        <result column="dept_tjcode" jdbcType="VARCHAR" property="deptTjcode"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    dept_id, dept_name, dept_code, dept_imgurl, dept_shenhe, dept_tjcode, create_time, 
+    update_time, `status`
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_deptup
+        where dept_id = #{deptId,jdbcType=INTEGER}
+    </select>
+    <select id="getorderres" resultMap="BaseResultMap" parameterType="int">
+        select * from tb_deptup
+        where 1=1
+        <if test="status!=4">
+            and `status`=#{status}
+        </if>
+        limit #{page},10;
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_deptup
+    where dept_id = #{deptId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.mdkproject.mdk2019.entity.TbDeptup">
+    insert into tb_deptup (dept_id, dept_name, dept_code, 
+      dept_imgurl, dept_shenhe, dept_tjcode, 
+      create_time, update_time, `status`
+      )
+    values (#{deptId,jdbcType=INTEGER}, #{deptName,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR}, 
+      #{deptImgurl,jdbcType=VARCHAR}, #{deptShenhe,jdbcType=VARCHAR}, #{deptTjcode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.mdkproject.mdk2019.entity.TbDeptup">
+        insert into tb_deptup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="deptName != null">
+                dept_name,
+            </if>
+            <if test="deptCode != null">
+                dept_code,
+            </if>
+            <if test="deptImgurl != null">
+                dept_imgurl,
+            </if>
+            <if test="deptShenhe != null">
+                dept_shenhe,
+            </if>
+            <if test="deptTjcode != null">
+                dept_tjcode,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">
+                #{deptId,jdbcType=INTEGER},
+            </if>
+            <if test="deptName != null">
+                #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="deptCode != null">
+                #{deptCode,jdbcType=VARCHAR},
+            </if>
+            <if test="deptImgurl != null">
+                #{deptImgurl,jdbcType=VARCHAR},
+            </if>
+            <if test="deptShenhe != null">
+                #{deptShenhe,jdbcType=VARCHAR},
+            </if>
+            <if test="deptTjcode != null">
+                #{deptTjcode,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.mdkproject.mdk2019.entity.TbDeptup">
+        update tb_deptup
+        <set>
+            <if test="deptName != null">
+                dept_name = #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="deptCode != null">
+                dept_code = #{deptCode,jdbcType=VARCHAR},
+            </if>
+            <if test="deptImgurl != null">
+                dept_imgurl = #{deptImgurl,jdbcType=VARCHAR},
+            </if>
+            <if test="deptShenhe != null">
+                dept_shenhe = #{deptShenhe,jdbcType=VARCHAR},
+            </if>
+            <if test="deptTjcode != null">
+                dept_tjcode = #{deptTjcode,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where dept_id = #{deptId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.mdkproject.mdk2019.entity.TbDeptup">
+    update tb_deptup
+    set dept_name = #{deptName,jdbcType=VARCHAR},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+      dept_imgurl = #{deptImgurl,jdbcType=VARCHAR},
+      dept_shenhe = #{deptShenhe,jdbcType=VARCHAR},
+      dept_tjcode = #{deptTjcode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR}
+    where dept_id = #{deptId,jdbcType=INTEGER}
+  </update>
+    <update id="updateStatus">
+    update tb_deptup set `status`=#{status}
+    where dept_id = #{deptId,jdbcType=INTEGER}
+  </update>
+</mapper>

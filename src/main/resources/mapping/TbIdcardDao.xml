@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdkproject.mdk2019.dao.TbIdcardDao">
+  <resultMap id="BaseResultMap" type="com.mdkproject.mdk2019.entity.TbIdcard">
+    <id column="health_num" jdbcType="INTEGER" property="healthNum" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="idcard_num" jdbcType="VARCHAR" property="idcardNum" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="starttime" jdbcType="VARCHAR" property="starttime" />
+    <result column="endtime" jdbcType="VARCHAR" property="endtime" />
+    <result column="createtime" jdbcType="VARCHAR" property="createtime" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="psb" jdbcType="VARCHAR" property="psb" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    health_num, `name`, idcard_num, age, sex, nation, photo, starttime, endtime, createtime,
+    address, psb
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_idcard
+    where health_num = #{healthNum,jdbcType=INTEGER}
+  </select>
+  <select id="selectByIdnum" resultType="java.lang.Integer" resultMap="BaseResultMap">
+      select * from tb_idcard where idcard_num=#{idnum}
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_idcard
+    where health_num = #{healthNum,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="health_num" keyProperty="healthNum" parameterType="com.mdkproject.mdk2019.entity.TbIdcard" useGeneratedKeys="true">
+    insert into tb_idcard (`name`, idcard_num, age,
+      sex, nation, photo,
+      starttime, endtime, createtime,
+      address, psb)
+    values (#{name,jdbcType=VARCHAR}, #{idcardNum,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
+      #{sex,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR},
+      #{starttime,jdbcType=VARCHAR}, #{endtime,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{psb,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="health_num" keyProperty="healthNum" parameterType="com.mdkproject.mdk2019.entity.TbIdcard" useGeneratedKeys="true">
+    insert into tb_idcard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="idcardNum != null">
+        idcard_num,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="starttime != null">
+        starttime,
+      </if>
+      <if test="endtime != null">
+        endtime,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="psb != null">
+        psb,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardNum != null">
+        #{idcardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="psb != null">
+        #{psb,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mdkproject.mdk2019.entity.TbIdcard">
+    update tb_idcard
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardNum != null">
+        idcard_num = #{idcardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        nation = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        starttime = #{starttime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        endtime = #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="psb != null">
+        psb = #{psb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where health_num = #{healthNum,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mdkproject.mdk2019.entity.TbIdcard">
+    update tb_idcard
+    set `name` = #{name,jdbcType=VARCHAR},
+      idcard_num = #{idcardNum,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=VARCHAR},
+      nation = #{nation,jdbcType=VARCHAR},
+      photo = #{photo,jdbcType=VARCHAR},
+      starttime = #{starttime,jdbcType=VARCHAR},
+      endtime = #{endtime,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      psb = #{psb,jdbcType=VARCHAR}
+    where health_num = #{healthNum,jdbcType=INTEGER}
+  </update>
+
+
+  <!--批量插入-->
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into tb_idcard
+    (name,idcard_num,age,sex,nation,photo,starttime,endtime,createtime,address,psb)
+    values
+    <foreach collection="list" index="index" item="cardinfo" separator=",">
+      (
+      #{cardinfo.name},
+      #{cardinfo.idcard_num},
+      #{cardinfo.age},
+      #{cardinfo.sex},
+      #{cardinfo.nation},
+      #{cardinfo.photo},
+      #{cardinfo.starttime},
+      #{cardinfo.endtime},
+      #{cardinfo.createtime},
+      #{cardinfo.address},
+      #{cardinfo.psb}
+      )
+    </foreach>
+  </insert>
+  <!--批量更新-->
+  <update id="Updatebatch" parameterType="java.util.List">
+    <foreach close="" collection="list" index="index" item="cardinfo" open="" separator=";">
+      update user set
+      name=#{cardinfo.name,jdbcType=VARCHAR},
+      age=#{cardinfo.idcard_num,jdbcType=INTEGER}
+      age=#{cardinfo.age,jdbcType=INTEGER}
+      age=#{cardinfo.sex,jdbcType=INTEGER}
+      age=#{cardinfo.nation,jdbcType=INTEGER}
+      age=#{cardinfo.photo,jdbcType=INTEGER}
+      age=#{cardinfo.starttime,jdbcType=INTEGER}
+      age=#{cardinfo.endtime,jdbcType=INTEGER}
+      age=#{cardinfo.createtime,jdbcType=INTEGER}
+      age=#{cardinfo.address,jdbcType=INTEGER}
+      age=#{cardinfo.psb,jdbcType=INTEGER}
+      where health_num = #{cardinfo.healthNum,jdbcType=INTEGER}
+    </foreach>
+  </update>
+
+
+
+
+
+
+</mapper>

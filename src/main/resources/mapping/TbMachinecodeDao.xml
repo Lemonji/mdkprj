@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdkproject.mdk2019.dao.TbMachinecodeDao">
+  <resultMap id="BaseResultMap" type="com.mdkproject.mdk2019.entity.TbMachinecode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="machinecode" jdbcType="VARCHAR" property="machinecode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="activetime" jdbcType="VARCHAR" property="activetime" />
+    <result column="activedept" jdbcType="VARCHAR" property="activedept" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, machinecode, `status`, activetime, activedept
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_machinecode
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findFirstId" resultType="java.lang.Integer">
+    select id from tb_machinecode where status=0 order by id limit 0,1
+  </select>
+  <select id="activeMachine" resultType="java.lang.Integer">
+    select status from tb_machinecode where machinecode=#{record}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_machinecode
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mdkproject.mdk2019.entity.TbMachinecode">
+    insert into tb_machinecode (id, machinecode, `status`, 
+      activetime, activedept)
+    values (#{id,jdbcType=INTEGER}, #{machinecode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{activetime,jdbcType=VARCHAR}, #{activedept,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mdkproject.mdk2019.entity.TbMachinecode">
+    insert into tb_machinecode
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="machinecode != null">
+        machinecode,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="activetime != null">
+        activetime,
+      </if>
+      <if test="activedept != null">
+        activedept,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="machinecode != null">
+        #{machinecode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="activetime != null">
+        #{activetime,jdbcType=VARCHAR},
+      </if>
+      <if test="activedept != null">
+        #{activedept,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mdkproject.mdk2019.entity.TbMachinecode">
+    update tb_machinecode
+    <set>
+      <if test="machinecode != null">
+        machinecode = #{machinecode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="activetime != null">
+        activetime = #{activetime,jdbcType=VARCHAR},
+      </if>
+      <if test="activedept != null">
+        activedept = #{activedept,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mdkproject.mdk2019.entity.TbMachinecode">
+    update tb_machinecode
+    set machinecode = #{machinecode,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      activetime = #{activetime,jdbcType=VARCHAR},
+      activedept = #{activedept,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateTime">
+    update tb_machinecode
+    set activetime=#{activetime}
+    where machinecode=#{machinecode}
+  </update>
+</mapper>
