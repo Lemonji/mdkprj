@@ -12,7 +12,16 @@ public class MachineController {
 
     @GetMapping("/add")
     public int addmachine(){
-        return machineService.addmachine();
+        int sum=0;
+        for(int i=0;i<10;i++){
+            try {
+                machineService.addmachine();
+                sum++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return sum;
     }
 
     @PostMapping("/activeMachine")
