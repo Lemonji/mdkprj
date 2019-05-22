@@ -61,4 +61,6 @@ public interface HearthCardMapper {
     int daycardnum(String nowdate);
 
     List<HearthCard> weektjnum();
+
+    String getlastnum();
 }

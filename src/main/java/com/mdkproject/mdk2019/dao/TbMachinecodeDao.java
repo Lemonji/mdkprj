@@ -18,7 +18,7 @@ public interface TbMachinecodeDao {
     int updateByPrimaryKey(TbMachinecode record);
 
     //当机器被激活时，返回机器的状态,并且要记录激活时间，激活单位信息
-    int activeMachine(String record);
+    TbMachinecode activeMachine(String record);
     int updateTime(TbMachinecode machinecode);
     int findFirstId();
 }

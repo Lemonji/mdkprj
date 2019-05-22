@@ -13,6 +13,12 @@ public class SimpledateUtil {
         return createtime;
     }
 
+    public static String getSimpledate(Date date){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        String createtime=sdf.format(date);
+        return createtime;
+    }
+
     public static String getMonth(){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
         Date date=new Date();

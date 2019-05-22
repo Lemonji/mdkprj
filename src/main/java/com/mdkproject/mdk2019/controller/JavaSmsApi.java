@@ -3,7 +3,6 @@ package com.mdkproject.mdk2019.controller;
 import com.mdkproject.mdk2019.error.BusinessException;
 import com.mdkproject.mdk2019.error.EmBusinessError;
 import com.mdkproject.mdk2019.response.CommonReturnType;
-import com.mdkproject.mdk2019.utils.MyMD5Util;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  * @Version 1.0
  */
 @Controller
-@RequestMapping("sms")
+@RequestMapping("/sms")
 @CrossOrigin(origins = "*",allowCredentials = "true")
 public class JavaSmsApi extends BaseController{
 
@@ -78,10 +78,11 @@ public class JavaSmsApi extends BaseController{
      * 功能描述: 发送短信，默认post请求
      */
 
-    @RequestMapping( value = "sendMsg")
+    @RequestMapping( value = "/sendMsg")
     @ResponseBody
-    public CommonReturnType sendMsg(@RequestParam(name = "telphone")String telphone
+    public CommonReturnType sendMsg(@RequestParam(name = "telphone") @NotBlank String telphone
                                     ) throws Exception {
+        System.out.println("短信请求来了");
         //修改为您的apikey.apikey可在官网（http://www.yunpian.com)登录后获取
         String apikey = "7ad4203389369086f3d7aad7cd85b60a";
         //修改为您要发送的手机号
@@ -114,8 +115,8 @@ public class JavaSmsApi extends BaseController{
 
             //RedisClientServer.set(mobile, code, 60);
             redisTemplate.opsForValue().set(mobile,code,300l, TimeUnit.SECONDS);
-
-            return CommonReturnType.createCommonReturnType(MyMD5Util.getEncryptedPwd(code));
+            return CommonReturnType.createCommonReturnType(code);
+            //return CommonReturnType.createCommonReturnType(MyMD5Util.getEncryptedPwd(code));
         }else if (startcode != null && startcode.equals("22")){
             throw new BusinessException(EmBusinessError.CODE_EXCEED);
         }else {

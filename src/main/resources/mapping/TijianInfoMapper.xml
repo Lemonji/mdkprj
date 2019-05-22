@@ -352,10 +352,10 @@
     <include refid="Base_Column_List"/>
     from tb_tijianinfo
     <if test="startTime!=null and startTime!=''">
-      and create_time &gt;= #{startTime}
+      and date(create_time) &gt;= #{startTime}
     </if>
     <if test="endTime!=null and endTime!=''">
-      and create_time $lt;= #{endTime}
+      and date(create_time) $lt;= #{endTime}
     </if>
 
   </select>
@@ -371,7 +371,6 @@
   <select id="weektjnum" resultMap="countmap">
     SELECT create_time,COUNT(create_time) FROM tb_tijianinfo GROUP BY create_time ORDER BY tj_id DESC LIMIT 0,5
   </select>
-
 
   <!--健康证检查表查询-->
   <select id="findtjporj" resultMap="BaseResultMap" parameterType="map">
@@ -401,5 +400,11 @@
     <if test="cstime!=null &amp; cetime!=null ">
       and c.create_time between #{cstime} and #{cetime}
     </if>
+  </select>
+    <select id="getlastnum" resultMap="BaseResultMap">
+      SELECT number,hearthcard_num FROM tb_tijianinfo GROUP BY tj_id desc LIMIT 0,1
+    </select>
+  <select id="daytjlist" resultMap="BaseResultMap">
+    select * from tb_tijianinfo where date(create_time)>=#{daytime} group by tj_id desc
   </select>
 </mapper>

@@ -2,24 +2,21 @@ package com.mdkproject.mdk2019.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mdkproject.mdk2019.response.CommonReturnType;
 import com.mdkproject.mdk2019.services.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(
     origins = {"*"},
     allowCredentials = "true")
+@RequestMapping("/hospital")
 public class HospitalController {
   @Autowired private HospitalService hospitalService;
 
   @PostMapping("/gethos")
-  public List getallhos(@RequestBody String qunum) {
+  public CommonReturnType getallhos(@RequestBody String qunum) {
     System.out.println(qunum);
     JSONObject jsonObject= JSON.parseObject(qunum);
     System.out.println(jsonObject);
@@ -44,9 +41,9 @@ public class HospitalController {
     }
     System.out.println(quname);
     if (quname != null) {
-      return hospitalService.findbyqu(quname);
+      return CommonReturnType.createCommonReturnType(hospitalService.findbyqu(quname));
     }else {
-      return null;
+      return CommonReturnType.createCommonReturnType("datanotfound","fail");
     }
   }
 }

@@ -100,8 +100,8 @@ public class HearthCardController{
 
     @GetMapping("/daycardnum")
     @ResponseBody
-    public int daycardnum(){
-        return hearthCardService.daycardnum();
+    public CommonReturnType daycardnum(){
+        return CommonReturnType.createCommonReturnType(hearthCardService.daycardnum());
     }
 
 
@@ -126,4 +126,10 @@ public class HearthCardController{
     }
 
 
+    //查询健康证最后一条记录的健康证编号
+    @GetMapping("/getlastnum")
+    public CommonReturnType getlastnum(){
+        String lastnum=hearthCardService.getlastnum();
+        return CommonReturnType.createCommonReturnType(lastnum);
+    }
 }

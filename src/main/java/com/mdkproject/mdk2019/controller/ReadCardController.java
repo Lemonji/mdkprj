@@ -174,6 +174,7 @@ public class ReadCardController extends BaseController {
             map.put("pDepartment", pDepartmentnew1.trim());
             map.put("pEffectDate", pEffectDate1.trim());
             map.put("pExpire", pExpire1.trim());
+
             // 生成图片
             int b = epen.GetBmpFile(pBmpFile);
             System.out.println("身份证照片：--------" + b);

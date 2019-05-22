@@ -77,4 +77,8 @@ public interface TijianInfoMapper {
 
     //健康检查表查询
     List<TijianInfo> findtjporj(Map conditions);
+
+    TijianInfo getlastnum();
+
+    List daytjlist(String daytime);
 }

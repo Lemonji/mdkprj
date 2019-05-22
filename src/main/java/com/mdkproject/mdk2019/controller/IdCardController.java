@@ -3,6 +3,7 @@ package com.mdkproject.mdk2019.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mdkproject.mdk2019.entity.TbIdcard;
+import com.mdkproject.mdk2019.response.CommonReturnType;
 import com.mdkproject.mdk2019.services.DeptOrderInfoService;
 import com.mdkproject.mdk2019.services.IdCardService;
 import com.mdkproject.mdk2019.utils.Base64Util;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/idcard")
 public class IdCardController {
     @Autowired
     private IdCardService idCardService;
@@ -30,18 +32,17 @@ public class IdCardController {
 
     private static final Logger logger = LoggerFactory.getLogger(IdCardController.class);
 
-
-
     /**
      * 每次拿到身份证信息的时候都做一次判断
      * 如果身份证信息已存在，且保存时间超过11个月，那么就允许更新，否则不允许
      * 如果是新的身份证信息那么就直接新增一条数据
      */
     @PostMapping("/insertidcard")
-    public String insertsome(@RequestBody Map data) {
+    public CommonReturnType insertsome(@RequestBody Map data) {
+        System.out.println("请求道理");
         // 首先把字符串转为json对象
         String jsonstr= JSON.toJSONString(data,true);
-
+        System.out.println(jsonstr);
         JSONObject jsonObject = JSONObject.parseObject(jsonstr);
         String idCard = jsonObject.getString("idcardnum");      //身份证号
         TbIdcard res = idCardService.selectByIdnum(idCard);
@@ -58,16 +59,16 @@ public class IdCardController {
                 Date newdate = gc.getTime();
                 int dateresult = newdate.compareTo(nowdate);
                 if (dateresult > 0) {
-                    return "有效期未满11个月";
+                    return CommonReturnType.createCommonReturnType("有效期未满11个月","fail");
                 }else {
                     idCardService.deleteByPrimaryKey(res.getHealthNum());
                     res.setHealthNum(0);
                     res.setCreatetime(sf.format(nowdate));
                     int updateres=idCardService.insert(res);
                     if(updateres!=0){
-                        return "上传成功";
+                        return CommonReturnType.createCommonReturnType("上传成功","fail");
                     }else {
-                        return "未知错误，上传失败";
+                        return CommonReturnType.createCommonReturnType("未知错误，上传失败","fail");
                     }
                 }
             } catch (ParseException e) {
@@ -95,14 +96,14 @@ public class IdCardController {
             System.out.println(jssize);
         }
         if (jssize < 10) {
-            return "参数有误";
+            return CommonReturnType.createCommonReturnType("参数有误","fail");
         }
         Pattern pattern =
                 Pattern.compile("^(\\d{6})(18|19|20)?(\\d{2})([01]\\d)([0123]\\d)(\\d{3})(\\d|X|x)?$");
         String idcardnum = jsonObject.getString("idcardnum");
         Matcher matcher = pattern.matcher(idcardnum);
         if (!matcher.matches()) {
-            return "身份证格式有误";
+            return CommonReturnType.createCommonReturnType("身份证格式有误","fail");
         }
 
         //添加其他两个不需要传参的字段
@@ -124,9 +125,9 @@ public class IdCardController {
 //        }
 
         if (result != 0) {
-            return "上传成功";
+            return CommonReturnType.createCommonReturnType("上传成功");
         }
-        return "未知错误，上传失败";
+        return CommonReturnType.createCommonReturnType("未知错误，上传失败","fail");
     }
 
 

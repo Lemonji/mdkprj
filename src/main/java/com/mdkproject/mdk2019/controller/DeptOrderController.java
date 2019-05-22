@@ -1,7 +1,6 @@
 package com.mdkproject.mdk2019.controller;
 
 import com.mdkproject.mdk2019.controller.viewobject.DeptOrderVO;
-import com.mdkproject.mdk2019.entity.DeptOrder;
 import com.mdkproject.mdk2019.error.BusinessException;
 import com.mdkproject.mdk2019.response.CommonReturnType;
 import com.mdkproject.mdk2019.services.DeptOrderService;
@@ -111,15 +110,15 @@ public class DeptOrderController extends BaseController {
     //查询当日体检预约单位个数
     @GetMapping("/dayordernum")
     @ResponseBody
-    public int dayordernum(){
-        return deptOrderService.dayordernum();
+    public CommonReturnType dayordernum(){
+        return CommonReturnType.createCommonReturnType(deptOrderService.dayordernum());
     }
 
 
     //查询最近一周预约单位个数
     @GetMapping("/weektjnum")
     @ResponseBody
-    public List<DeptOrder> weektjnum(){
-        return deptOrderService.weektjnum();
+    public CommonReturnType weektjnum(){
+        return CommonReturnType.createCommonReturnType(deptOrderService.weektjnum());
     }
 }

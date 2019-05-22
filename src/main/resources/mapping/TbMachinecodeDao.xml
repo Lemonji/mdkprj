@@ -20,8 +20,8 @@
   <select id="findFirstId" resultType="java.lang.Integer">
     select id from tb_machinecode where status=0 order by id limit 0,1
   </select>
-  <select id="activeMachine" resultType="java.lang.Integer">
-    select status from tb_machinecode where machinecode=#{record}
+  <select id="activeMachine" resultMap="BaseResultMap">
+    select * from tb_machinecode where machinecode=#{record}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_machinecode

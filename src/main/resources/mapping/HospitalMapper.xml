@@ -15,7 +15,6 @@
     <result column="hospital_city" jdbcType="VARCHAR" property="hospitalCity" />
     <result column="hospital_district" jdbcType="VARCHAR" property="hospitalDistrict" />
     <result column="hospital_address" jdbcType="VARCHAR" property="hospitalAddress" />
-    <result column="area_num" jdbcType="VARCHAR" property="areaNum" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
   </resultMap>
@@ -26,7 +25,7 @@
       This element was generated on Tue Apr 02 16:50:27 CST 2019.
     -->
     hospital_id, hospital_name, hospital_num, hospital_gz, hospital_province, hospital_city, 
-    hospital_district, hospital_address, area_num, create_time, update_time
+    hospital_district, hospital_address, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
@@ -62,11 +61,11 @@
     -->
     insert into tb_hospital (hospital_id, hospital_name, hospital_num, 
       hospital_gz, hospital_province, hospital_city, 
-      hospital_district, hospital_address, area_num, 
+      hospital_district, hospital_address,
       create_time, update_time)
     values (#{hospitalId,jdbcType=INTEGER}, #{hospitalName,jdbcType=VARCHAR}, #{hospitalNum,jdbcType=VARCHAR}, 
       #{hospitalGz,jdbcType=VARCHAR}, #{hospitalProvince,jdbcType=VARCHAR}, #{hospitalCity,jdbcType=VARCHAR}, 
-      #{hospitalDistrict,jdbcType=VARCHAR}, #{hospitalAddress,jdbcType=VARCHAR}, #{areaNum,jdbcType=VARCHAR}, 
+      #{hospitalDistrict,jdbcType=VARCHAR}, #{hospitalAddress,jdbcType=VARCHAR},jdbcType=VARCHAR},
       #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mdkproject.mdk2019.entity.Hospital">
@@ -101,9 +100,6 @@
       <if test="hospitalAddress != null">
         hospital_address,
       </if>
-      <if test="areaNum != null">
-        area_num,
-      </if>
       <if test="createTime != null">
         create_time,
       </if>
@@ -135,9 +131,6 @@
       </if>
       <if test="hospitalAddress != null">
         #{hospitalAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="areaNum != null">
-        #{areaNum,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
@@ -176,9 +169,6 @@
       <if test="hospitalAddress != null">
         hospital_address = #{hospitalAddress,jdbcType=VARCHAR},
       </if>
-      <if test="areaNum != null">
-        area_num = #{areaNum,jdbcType=VARCHAR},
-      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
@@ -202,7 +192,6 @@
       hospital_city = #{hospitalCity,jdbcType=VARCHAR},
       hospital_district = #{hospitalDistrict,jdbcType=VARCHAR},
       hospital_address = #{hospitalAddress,jdbcType=VARCHAR},
-      area_num = #{areaNum,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=VARCHAR}
     where hospital_id = #{hospitalId,jdbcType=INTEGER}

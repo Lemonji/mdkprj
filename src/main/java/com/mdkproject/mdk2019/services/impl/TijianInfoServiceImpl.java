@@ -142,6 +142,21 @@ public class TijianInfoServiceImpl implements TijianInfoService {
         return tijianInfoMapper.findtjporj(conditions);
     }
 
+    public TijianInfo getlastnum(){
+        return tijianInfoMapper.getlastnum();
+    }
+
+    @Override
+    public List<TijianModel> daytjlist(String daytime) {
+        List<TijianInfo> tijianInfoList = tijianInfoMapper.daytjlist(daytime);
+        //使用steam api 将list内的entity -- model
+        List<TijianModel> tijianModelList = tijianInfoList.stream().map(tijianInfo -> {
+            TijianModel tijianModel = this.convertTijianModelFromTijianInfo(tijianInfo);
+            return tijianModel;
+        }).collect(Collectors.toList());
+        return tijianModelList;
+    }
+
 
     //model--entity
     private TijianInfo convertTijianInfoFromTijianMode(TijianModel tijianModel){

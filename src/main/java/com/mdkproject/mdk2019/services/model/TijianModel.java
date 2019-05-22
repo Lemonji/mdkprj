@@ -14,7 +14,7 @@ public class TijianModel {
     private String number;          //编号
     private String telphone;        //手机号
     private String name;            //姓名
-    private String sex;             //健康证编号
+    private String sex;             //性别
     private Integer age;            //年龄
     private String idcardNum;       //身份证号
     private String hearthcardNum;   //健康证编号

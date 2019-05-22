@@ -239,6 +239,7 @@
     from tb_hearth_card
     where id_card = #{idCard,jdbcType=VARCHAR}
   </select>
+
     <select id="daycardnum" resultType="java.lang.Integer">
       select count(health_id) from tb_hearth_card where date(create_time)=#{nowdate}
     </select>
@@ -246,6 +247,9 @@
 
     <select id="weektjnum" resultMap="countmap">
        SELECT create_time,COUNT(create_time) FROM tb_hearth_card GROUP BY create_time ORDER BY health_id DESC LIMIT 0,5
+    </select>
+    <select id="getlastnum" resultType="java.lang.String">
+      select health_num from tb_hearth_card group by health_id desc limit 0,1
     </select>
 
 </mapper>

@@ -1,5 +1,7 @@
 package com.mdkproject.mdk2019.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.mdkproject.mdk2019.controller.viewobject.TijianInfoVO;
 import com.mdkproject.mdk2019.entity.TijianInfo;
 import com.mdkproject.mdk2019.error.BusinessException;
@@ -8,8 +10,7 @@ import com.mdkproject.mdk2019.response.CommonReturnType;
 import com.mdkproject.mdk2019.services.TijianInfoService;
 import com.mdkproject.mdk2019.services.TijianProjectService;
 import com.mdkproject.mdk2019.services.model.TijianModel;
-import com.mdkproject.mdk2019.utils.ImgOrBase64;
-import com.mdkproject.mdk2019.utils.MyTools;
+import com.mdkproject.mdk2019.utils.SimpledateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,23 +40,30 @@ public class TijianInfoController {
     private TijianProjectService tjporj;
 
 
-
-
     //体检基础录入
     @RequestMapping(value = "/add",method = {RequestMethod.POST},produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public CommonReturnType add(TijianModel formdata) throws BusinessException {
-        if (formdata==null){
+    public CommonReturnType add(@RequestBody String str) throws BusinessException {
+        /*if (formdata==null){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
-        }
-        String baststr = formdata.getIdcardPhtoto().split(",")[1].toString();
-        String path = "F:/img" + "/"+MyTools.getDateR()+".jpg";
-        ImgOrBase64.base64StrToImage(baststr,path);
-        System.out.println(path);
-        formdata.setIdcardPhtoto(path);
+        }*/
+        /*if(formdata.getIdcardPhtoto()!=null) {
+            String baststr = formdata.getIdcardPhtoto().split(",")[1].toString();
+            String path = "F:/img" + "/" + MyTools.getDateR() + ".jpg";
+            ImgOrBase64.base64StrToImage(baststr, path);
+            System.out.println(path);
+            formdata.setIdcardPhtoto(path);
+        }else {*/
+        System.out.println(str);
+        JSONObject jsonObject= JSON.parseObject(str);
+        jsonObject.put("idcardPhtoto","whatever");
+        System.out.println(jsonObject);
+        String jsonstr=JSON.toJSONString(jsonObject);
+        TijianModel formdata=JSON.parseObject(jsonstr,TijianModel.class);
+        //}
         TijianModel tijianModel = tijianInfoService.save(formdata);
-        TijianInfoVO InfoVO = this.convertTijianInfoVOFromTijianModel(tijianModel);
-        return CommonReturnType.createCommonReturnType(InfoVO);
+        //TijianInfoVO InfoVO = this.convertTijianInfoVOFromTijianModel(tijianModel);
+        return CommonReturnType.createCommonReturnType(formdata);
     }
 
     //体检信息详情
@@ -112,8 +117,8 @@ public class TijianInfoController {
     //改变体检审核的结果，新增的默认都是未审核
     @PostMapping("/upstatus")
     @ResponseBody
-    public int updatetjstatus(int tjid,int status){
-        return tijianInfoService.updateStatus(tjid,status);
+    public CommonReturnType updatetjstatus(int tjid,int status){
+        return CommonReturnType.createCommonReturnType(tijianInfoService.updateStatus(tjid,status));
     }
 
 
@@ -130,47 +135,47 @@ public class TijianInfoController {
     //多条件查询
     @PostMapping("/getbycond")
     @ResponseBody
-    public List findbycond(@RequestBody Map conditions){
-        return tijianInfoService.findbycondition(conditions);
+    public CommonReturnType findbycond(@RequestBody Map conditions){
+        return CommonReturnType.createCommonReturnType(tijianInfoService.findbycondition(conditions));
     }
 
 
     //查询当日体检人数
     @GetMapping("/daytjnum")
     @ResponseBody
-    public int daytjnum(){
+    public CommonReturnType daytjnum(){
     //System.out.println("有请求来了");
-        return tijianInfoService.daytjnum();
+        return CommonReturnType.createCommonReturnType(tijianInfoService.daytjnum());
     }
 
     //查询当月体检人数
     @GetMapping("/monthtjnum")
     @ResponseBody
-    public int monthtjnum(){
-        return tijianInfoService.monthtjnum();
+    public CommonReturnType monthtjnum(){
+        return CommonReturnType.createCommonReturnType(tijianInfoService.monthtjnum());
     }
 
 
     //查询体检总人数
     @GetMapping("/alltjnum")
     @ResponseBody
-    public int alltjnum(){
-        return tijianInfoService.alltjnum();
+    public CommonReturnType alltjnum(){
+        return CommonReturnType.createCommonReturnType(tijianInfoService.alltjnum());
     }
 
 
     //查询最近一周体检人数
     @GetMapping("/weektjnum")
     @ResponseBody
-    public List<TijianInfo> weektjnum(){
-        return tijianInfoService.weektjnum();
+    public CommonReturnType weektjnum(){
+        return CommonReturnType.createCommonReturnType(tijianInfoService.weektjnum());
     }
 
 
     //从业人员健康检查表
     @PostMapping("/tjproj")
     @ResponseBody
-    public List tjproj(@RequestBody Map conditions){
+    public CommonReturnType tjproj(@RequestBody Map conditions){
         List alllist=new ArrayList();
         Map map=new HashMap();
         List<TijianInfo> tjinfolist= tijianInfoService.findtjporj(conditions);
@@ -187,6 +192,29 @@ public class TijianInfoController {
         }else{
             System.out.println("没有数据");
         }
-        return alllist;
+        return CommonReturnType.createCommonReturnType(alllist);
+    }
+
+
+    //查询体检表最后一条记录的体检编号
+    @GetMapping("/getlastnum")
+    @ResponseBody
+    public CommonReturnType getlastnum(){
+        TijianInfo lastnum=tijianInfoService.getlastnum();
+        return CommonReturnType.createCommonReturnType(lastnum);
+    }
+
+    //刷新页面的时候重新给下面表格数据
+    @PostMapping("/daytjlist")
+    @ResponseBody
+    public CommonReturnType daytjlist(){
+       //String daytime=SimpledateUtil.getSimpledate();
+       GregorianCalendar gc=new GregorianCalendar();
+       gc.setTime(new Date());
+       gc.add(5,-7);
+       Date lastweek=gc.getTime();
+       String daytime=SimpledateUtil.getSimpledate(lastweek);
+        List list=tijianInfoService.daytjlist(daytime);
+        return CommonReturnType.createCommonReturnType(list);
     }
 }

@@ -157,7 +157,7 @@ public class MyMD5Util {
         String str="";
         for(int i=0;i<10;i++){
             str+=(int)(Math.random()*10);
-            str+=(char)(Math.random()*26+'a');
+            str+=(char)(Math.random()*26+'A');
         }
         System.out.println(str);
     }

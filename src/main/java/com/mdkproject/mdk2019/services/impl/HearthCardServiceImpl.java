@@ -58,6 +58,10 @@ public class HearthCardServiceImpl implements HearthCardService {
         return hearthCardMapper.weektjnum();
     }
 
+    public String getlastnum(){
+        return hearthCardMapper.getlastnum();
+    }
+
     //领域模型(对象-->模型)
     private HealthCardModel convertModelFromEntity(HearthCard healthCard, Hospital hospital){
         HealthCardModel healthCardModel = new HealthCardModel();

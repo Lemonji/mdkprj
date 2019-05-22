@@ -13,4 +13,6 @@ public interface HearthCardService {
     int daycardnum();
 
     List<HearthCard> weektjnum();
+
+    String getlastnum();
 }

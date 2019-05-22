@@ -41,4 +41,8 @@ public interface TijianInfoService {
     List<TijianInfo> weektjnum();
 
     List<TijianInfo> findtjporj(Map conditions);
+
+    TijianInfo getlastnum();
+
+    List<TijianModel> daytjlist(String daytime);
 }

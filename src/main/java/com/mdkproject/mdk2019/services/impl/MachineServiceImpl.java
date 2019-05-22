@@ -3,7 +3,6 @@ package com.mdkproject.mdk2019.services.impl;
 import com.mdkproject.mdk2019.dao.TbMachinecodeDao;
 import com.mdkproject.mdk2019.entity.TbMachinecode;
 import com.mdkproject.mdk2019.services.MachineService;
-import com.mdkproject.mdk2019.utils.SimpledateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,30 +16,22 @@ public class MachineServiceImpl implements MachineService {
         String str="";
         for(int i=0;i<8;i++){
             str+=(int)(Math.random()*10);
-            str+=(char)(Math.random()*26+'a');
+            str+=(char)(Math.random()*26+'A');
         }
         TbMachinecode machine=new TbMachinecode();
-        /*try {
-            machine.setMachinecode(MyMD5Util.getEncryptedPwd(str));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
         machine.setMachinecode(str);
         machine.setStatus(0);
         return machinecodeDao.insertSelective(machine);
     }
 
     @Override
-    public int activeMachine(String machinecode) {
-        //int mcid=machinecodeDao.findFirstId();
-        //machinecode.setId(mcid);
-        TbMachinecode tbMachinecode=new TbMachinecode();
-        tbMachinecode.setActivetime(SimpledateUtil.getSimpledate());
-        tbMachinecode.setMachinecode(machinecode);
-        machinecodeDao.updateTime(tbMachinecode);
+    public TbMachinecode activeMachine(String machinecode) {
         return machinecodeDao.activeMachine(machinecode);
+    }
+
+    @Override
+    public int updateTime(TbMachinecode machinecode) {
+        return machinecodeDao.updateTime(machinecode);
     }
 
     /*@Override
