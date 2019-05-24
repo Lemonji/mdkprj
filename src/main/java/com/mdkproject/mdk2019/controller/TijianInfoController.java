@@ -44,25 +44,28 @@ public class TijianInfoController {
     @RequestMapping(value = "/add",method = {RequestMethod.POST},produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public CommonReturnType add(@RequestBody String str) throws BusinessException {
-        /*if (formdata==null){
-            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
-        }*/
-        /*if(formdata.getIdcardPhtoto()!=null) {
-            String baststr = formdata.getIdcardPhtoto().split(",")[1].toString();
-            String path = "F:/img" + "/" + MyTools.getDateR() + ".jpg";
-            ImgOrBase64.base64StrToImage(baststr, path);
-            System.out.println(path);
-            formdata.setIdcardPhtoto(path);
-        }else {*/
         System.out.println(str);
         JSONObject jsonObject= JSON.parseObject(str);
+        int jssize = 0;
+        for (String key : jsonObject.keySet()) {
+            jssize++;
+            if (jsonObject.get(key) == null
+                    || jsonObject.get(key) == ""
+                    || jsonObject.get(key).equals("")
+                    || jsonObject.get(key).toString().trim().length() == 0) {
+                //logger.info("出现了空字符串");
+                jssize--;
+            }
+            //System.out.println(jssize);
+        }
+        if (jssize < 13) {
+            return CommonReturnType.createCommonReturnType("参数有误","fail");
+        }
         jsonObject.put("idcardPhtoto","whatever");
         System.out.println(jsonObject);
         String jsonstr=JSON.toJSONString(jsonObject);
         TijianModel formdata=JSON.parseObject(jsonstr,TijianModel.class);
-        //}
         TijianModel tijianModel = tijianInfoService.save(formdata);
-        //TijianInfoVO InfoVO = this.convertTijianInfoVOFromTijianModel(tijianModel);
         return CommonReturnType.createCommonReturnType(formdata);
     }
 
@@ -205,9 +208,9 @@ public class TijianInfoController {
     }
 
     //刷新页面的时候重新给下面表格数据
-    @PostMapping("/daytjlist")
+    @PostMapping("/weektjlist")
     @ResponseBody
-    public CommonReturnType daytjlist(){
+    public CommonReturnType weektjlist(){
        //String daytime=SimpledateUtil.getSimpledate();
        GregorianCalendar gc=new GregorianCalendar();
        gc.setTime(new Date());

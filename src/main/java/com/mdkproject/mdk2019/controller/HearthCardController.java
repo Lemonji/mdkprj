@@ -132,4 +132,5 @@ public class HearthCardController{
         String lastnum=hearthCardService.getlastnum();
         return CommonReturnType.createCommonReturnType(lastnum);
     }
+
 }

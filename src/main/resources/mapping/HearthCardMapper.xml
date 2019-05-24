@@ -246,10 +246,13 @@
 
 
     <select id="weektjnum" resultMap="countmap">
-       SELECT create_time,COUNT(create_time) FROM tb_hearth_card GROUP BY create_time ORDER BY health_id DESC LIMIT 0,5
+       SELECT create_time,COUNT(create_time) FROM tb_hearth_card GROUP BY date(create_time) ORDER BY health_id DESC LIMIT 0,5
     </select>
     <select id="getlastnum" resultType="java.lang.String">
       select health_num from tb_hearth_card group by health_id desc limit 0,1
+    </select>
+    <select id="gettjstatus" resultType="java.lang.String">
+      select medical from tb_hearth_card where id_card = #{idnum,jdbcType=VARCHAR}
     </select>
 
 </mapper>

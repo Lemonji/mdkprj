@@ -369,7 +369,7 @@
     select count(tj_id) from tb_tijianinfo
   </select>
   <select id="weektjnum" resultMap="countmap">
-    SELECT create_time,COUNT(create_time) FROM tb_tijianinfo GROUP BY create_time ORDER BY tj_id DESC LIMIT 0,5
+    SELECT create_time,COUNT(create_time) FROM tb_tijianinfo GROUP BY date(create_time) ORDER BY tj_id DESC LIMIT 0,5
   </select>
 
   <!--健康证检查表查询-->
@@ -407,4 +407,7 @@
   <select id="daytjlist" resultMap="BaseResultMap">
     select * from tb_tijianinfo where date(create_time)>=#{daytime} group by tj_id desc
   </select>
+    <select id="gettjstatus" resultType="java.lang.String">
+      select status from tb_tijianinfo where idcard_num=#{idnum}
+    </select>
 </mapper>

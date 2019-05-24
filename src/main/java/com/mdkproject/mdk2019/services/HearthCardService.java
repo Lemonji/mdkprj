@@ -15,4 +15,6 @@ public interface HearthCardService {
     List<HearthCard> weektjnum();
 
     String getlastnum();
+
+    String gettjstatus(String idnum);
 }

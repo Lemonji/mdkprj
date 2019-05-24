@@ -62,6 +62,11 @@ public class HearthCardServiceImpl implements HearthCardService {
         return hearthCardMapper.getlastnum();
     }
 
+    @Override
+    public String gettjstatus(String idnum) {
+        return hearthCardMapper.gettjstatus(idnum);
+    }
+
     //领域模型(对象-->模型)
     private HealthCardModel convertModelFromEntity(HearthCard healthCard, Hospital hospital){
         HealthCardModel healthCardModel = new HealthCardModel();

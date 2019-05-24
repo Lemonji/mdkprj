@@ -63,4 +63,6 @@ public interface HearthCardMapper {
     List<HearthCard> weektjnum();
 
     String getlastnum();
+
+    String gettjstatus(String idnum);
 }

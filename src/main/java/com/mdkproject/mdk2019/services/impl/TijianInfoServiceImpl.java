@@ -157,6 +157,11 @@ public class TijianInfoServiceImpl implements TijianInfoService {
         return tijianModelList;
     }
 
+    @Override
+    public String gettjstatus(String idnum) {
+        return tijianInfoMapper.gettjstatus(idnum);
+    }
+
 
     //model--entity
     private TijianInfo convertTijianInfoFromTijianMode(TijianModel tijianModel){

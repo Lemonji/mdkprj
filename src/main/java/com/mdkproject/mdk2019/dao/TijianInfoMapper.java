@@ -81,4 +81,6 @@ public interface TijianInfoMapper {
     TijianInfo getlastnum();
 
     List daytjlist(String daytime);
+
+    String gettjstatus(String idnum);
 }

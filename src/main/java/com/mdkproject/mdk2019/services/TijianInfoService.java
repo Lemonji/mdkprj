@@ -45,4 +45,6 @@ public interface TijianInfoService {
     TijianInfo getlastnum();
 
     List<TijianModel> daytjlist(String daytime);
+
+    String gettjstatus(String idnum);
 }
