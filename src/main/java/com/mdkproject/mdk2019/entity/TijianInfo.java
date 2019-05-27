@@ -302,21 +302,21 @@ public class TijianInfo {
     }
 
 
-    public String getHospitalname() {
+   /* public String getHospitalname() {
         return hospitalName;
     }
 
     public void setHospitalname(String hospitalName) {
         this.hospitalName = hospitalName;
-    }
+    }*/
 
-    public String getCreatTime() {
-        return healcardcreatTime;
-    }
+    //public String getCreatTime() {
+      //  return healcardcreatTime;
+    //}
 
-    public void setCreatTime(String healcardcreatTime) {
-        this.healcardcreatTime = healcardcreatTime;
-    }
+    //public void setCreatTime(String healcardcreatTime) {
+      //  this.healcardcreatTime = healcardcreatTime;
+   // }
 
     public String getHealthTime() {
         return healthTime;

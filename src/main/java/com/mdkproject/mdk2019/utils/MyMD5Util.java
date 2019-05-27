@@ -136,9 +136,9 @@ public class MyMD5Util {
         //String password="300146409";
 //        System.out.println(MyMD5Util.getEncryptedPwd(password));
         //System.out.println(MyMD5Util.validPassword("4719","450939628A3036E5C2A2763CA35AC8CC1DD7DBD064487DCCF63A297D"));
-        /*String password="12398764";
+        String password="oprator3";
         String mdpassword=getEncryptedPwd(password);
-        System.out.println(mdpassword);*/
+        System.out.println(mdpassword);
 
        /* int rd=(int) (Math.random()*1000000);
         Date date=new Date();
@@ -154,12 +154,12 @@ public class MyMD5Util {
        //char str=(char)(Math.random()*26+'A');
        // System.out.println(str);
 
-        String str="";
+        /*String str="";
         for(int i=0;i<10;i++){
             str+=(int)(Math.random()*10);
             str+=(char)(Math.random()*26+'A');
-        }
-        System.out.println(str);
+        }*/
+        //System.out.println(str);
     }
 
 

@@ -325,7 +325,7 @@
   </update>
   <update id="updateStatus">
     update tb_tijianinfo set status=#{status}
-    where tj_id = #{tjid,jdbcType=INTEGER}
+    where number = #{number}
   </update>
 
 
@@ -410,4 +410,22 @@
     <select id="gettjstatus" resultType="java.lang.String">
       select status from tb_tijianinfo where idcard_num=#{idnum}
     </select>
+    <select id="getzerostatus" resultType="java.lang.Integer">
+      select count(tj_id) from tb_tijianinfo where status=0
+    </select>
+    <select id="getonestatus" resultType="java.lang.Integer">
+      select count(tj_id) from tb_tijianinfo where status=1
+    </select>
+    <select id="getotwostatus" resultType="java.lang.Integer">
+      select count(tj_id) from tb_tijianinfo where status=2
+    </select>
+  <select id="getzerolist" resultType="com.mdkproject.mdk2019.entity.TijianInfo">
+      select * from tb_tijianinfo where status=0
+  </select>
+  <select id="getonelist" resultType="com.mdkproject.mdk2019.entity.TijianInfo">
+      select * from tb_tijianinfo where status=1
+  </select>
+  <select id="gettwolist" resultType="com.mdkproject.mdk2019.entity.TijianInfo">
+      select * from tb_tijianinfo where status=2
+  </select>
 </mapper>

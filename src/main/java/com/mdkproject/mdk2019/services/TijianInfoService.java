@@ -30,7 +30,7 @@ public interface TijianInfoService {
 
     List findbycondition(Map condition);
 
-    int updateStatus(int tjid,int status);
+    int updateStatus(String number,int status);
 
     int daytjnum();
 
@@ -47,4 +47,12 @@ public interface TijianInfoService {
     List<TijianModel> daytjlist(String daytime);
 
     String gettjstatus(String idnum);
+
+    int getzerostatus();
+    int getonestatus();
+    int getotwostatus();
+
+    List<TijianInfo> getzerolist();
+    List<TijianInfo> getonelist();
+    List<TijianInfo> gettwolist();
 }

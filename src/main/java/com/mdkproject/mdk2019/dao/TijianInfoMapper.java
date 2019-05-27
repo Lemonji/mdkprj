@@ -65,7 +65,7 @@ public interface TijianInfoMapper {
     //
     List findbycondition(Map condition);
 
-    int updateStatus(int tjid,int status);
+    int updateStatus(String number,int status);
 
     int daytjnum(String createtime);
 
@@ -83,4 +83,12 @@ public interface TijianInfoMapper {
     List daytjlist(String daytime);
 
     String gettjstatus(String idnum);
+
+    int getzerostatus();
+    int getonestatus();
+    int getotwostatus();
+
+    List<TijianInfo> getzerolist();
+    List<TijianInfo> getonelist();
+    List<TijianInfo> gettwolist();
 }

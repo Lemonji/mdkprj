@@ -109,8 +109,8 @@ public class TijianInfoServiceImpl implements TijianInfoService {
     }
 
     @Override
-    public int updateStatus(int tjid, int status) {
-        return tijianInfoMapper.updateStatus(tjid,status);
+    public int updateStatus(String number, int status) {
+        return tijianInfoMapper.updateStatus(number,status);
     }
 
     @Override
@@ -193,4 +193,25 @@ public class TijianInfoServiceImpl implements TijianInfoService {
       String sf=sdf.format(lastweek);
       System.out.println(sf);
   }
+
+
+    public int getzerostatus(){
+        return tijianInfoMapper.getzerostatus();
+    }
+    public int getonestatus(){
+        return tijianInfoMapper.getonestatus();
+    }
+    public int getotwostatus(){
+        return tijianInfoMapper.getotwostatus();
+    }
+
+    public List<TijianInfo> getzerolist(){
+        return tijianInfoMapper.getzerolist();
+    }
+    public List<TijianInfo> getonelist(){
+        return tijianInfoMapper.getonelist();
+    }
+    public List<TijianInfo> gettwolist(){
+        return tijianInfoMapper.gettwolist();
+    }
 }

@@ -39,6 +39,8 @@ public class TijianInfoController {
     @Autowired
     private TijianProjectService tjporj;
 
+    JSONObject publicjson;
+
 
     //体检基础录入
     @RequestMapping(value = "/add",method = {RequestMethod.POST},produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -120,8 +122,49 @@ public class TijianInfoController {
     //改变体检审核的结果，新增的默认都是未审核
     @PostMapping("/upstatus")
     @ResponseBody
-    public CommonReturnType updatetjstatus(int tjid,int status){
-        return CommonReturnType.createCommonReturnType(tijianInfoService.updateStatus(tjid,status));
+    public CommonReturnType updatetjstatus(@RequestBody String str){
+        System.out.println(str);
+        JSONObject jsonObject=new JSONObject();
+        jsonObject=JSON.parseObject(str);
+        String number=jsonObject.getString("number");
+        int status=jsonObject.getInteger("status");
+        return CommonReturnType.createCommonReturnType(tijianInfoService.updateStatus(number,status));
+    }
+
+    //查询体检未审核，审核通过，审核未通过的结果
+    @GetMapping("/getallstatus")
+    @ResponseBody
+    public CommonReturnType getallstatus(){
+        JSONObject jsonObject=new JSONObject();
+        int zerostatus=tijianInfoService.getzerostatus();
+        int onestatus=tijianInfoService.getonestatus();
+        int otwostatus=tijianInfoService.getotwostatus();
+        jsonObject.put("zerostatus",zerostatus);
+        jsonObject.put("onestatus",onestatus);
+        jsonObject.put("otwostatus",otwostatus);
+        return CommonReturnType.createCommonReturnType(jsonObject);
+    }
+
+    //体检未审核人员列表
+    @GetMapping("/getzerolist")
+    @ResponseBody
+    public CommonReturnType getzerolist(){
+        return CommonReturnType.createCommonReturnType(tijianInfoService.getzerolist());
+    }
+
+    //体检审核通过人员列表
+    @GetMapping("/getonelist")
+    @ResponseBody
+    public CommonReturnType getonelist(){
+        return CommonReturnType.createCommonReturnType(tijianInfoService.getonelist());
+    }
+
+
+    //体检审核不通过人员列表
+    @GetMapping("/gettwolist")
+    @ResponseBody
+    public CommonReturnType gettwolist(){
+        return CommonReturnType.createCommonReturnType(tijianInfoService.gettwolist());
     }
 
 
@@ -220,4 +263,39 @@ public class TijianInfoController {
         List list=tijianInfoService.daytjlist(daytime);
         return CommonReturnType.createCommonReturnType(list);
     }
+
+    //打印体检表的时候获取传过来的参数
+    @PostMapping("/tjtable")
+    @ResponseBody
+    public CommonReturnType tjbiao(@RequestBody String str) throws BusinessException {
+        System.out.println(str);
+        publicjson= JSON.parseObject(str);
+        int jssize = 0;
+        for (String key : publicjson.keySet()) {
+            jssize++;
+            if (publicjson.get(key) == null
+                    || publicjson.get(key) == ""
+                    || publicjson.get(key).equals("")
+                    || publicjson.get(key).toString().trim().length() == 0) {
+                //logger.info("出现了空字符串");
+                jssize--;
+            }
+            //System.out.println(jssize);
+        }
+        if (jssize < 9) {
+            return CommonReturnType.createCommonReturnType("参数有误","fail");
+        }
+        return CommonReturnType.createCommonReturnType("success");
+    }
+
+    //将获取到的数据传给体检表页面
+    @GetMapping("/gettjtable")
+    @ResponseBody
+    public CommonReturnType gettjbiaoinfo(){
+        if(publicjson!=null) {
+            return CommonReturnType.createCommonReturnType(publicjson);
+        }
+        else {return CommonReturnType.createCommonReturnType("获取失败","fail");}
+    }
+
 }
