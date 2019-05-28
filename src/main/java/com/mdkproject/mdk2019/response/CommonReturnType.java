@@ -20,7 +20,6 @@ public class CommonReturnType {
         return commonReturnType;
     }
 
-
     public String getStatus() {
         return status;
     }

@@ -53,10 +53,18 @@ public class OnlyforTuController {
         JSONObject jsonObject=new JSONObject();
         List<TijianInfo> tjdata=tijianInfoService.weektjnum();
         List<HearthCard> carddata=hearthCardService.weektjnum();
+        System.out.println(tjdata.size());
+        System.out.println(carddata.size());
         for(int i=0;i<tjdata.size();i++){
-            jsonObject.put("day"+i,tjdata.get(i).getCreateTime());
-            jsonObject.put("tjdaynum"+i,tjdata.get(i).getDaycount());
-            jsonObject.put("carddaynum"+i,carddata.get(i).getDaycount());
+            if(tjdata.size()>i) {
+                jsonObject.put("day" + i, tjdata.get(i).getCreateTime());
+            }
+            if(tjdata.size()>i) {
+                jsonObject.put("tjdaynum" + i, tjdata.get(i).getDaycount());
+            }
+            if(carddata.size()>i) {
+                jsonObject.put("carddaynum" + i, carddata.get(i).getDaycount());
+            }
         }
         return CommonReturnType.createCommonReturnType(jsonObject);
     }

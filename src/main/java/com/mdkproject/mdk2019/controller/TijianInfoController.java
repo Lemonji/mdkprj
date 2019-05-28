@@ -41,6 +41,8 @@ public class TijianInfoController {
 
     JSONObject publicjson;
 
+    JSONObject cardjson;
+
 
     //体检基础录入
     @RequestMapping(value = "/add",method = {RequestMethod.POST},produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -64,6 +66,7 @@ public class TijianInfoController {
             return CommonReturnType.createCommonReturnType("参数有误","fail");
         }
         jsonObject.put("idcardPhtoto","whatever");
+        cardjson=jsonObject;
         System.out.println(jsonObject);
         String jsonstr=JSON.toJSONString(jsonObject);
         TijianModel formdata=JSON.parseObject(jsonstr,TijianModel.class);
@@ -286,6 +289,16 @@ public class TijianInfoController {
             return CommonReturnType.createCommonReturnType("参数有误","fail");
         }
         return CommonReturnType.createCommonReturnType("success");
+    }
+
+    //打印健康证的时候将保存的数据传给前端
+    @GetMapping("/getcardinfo")
+    @ResponseBody
+    public CommonReturnType getcardinfo(){
+        if(cardjson!=null) {
+            return CommonReturnType.createCommonReturnType(cardjson);
+        }
+        else {return CommonReturnType.createCommonReturnType("获取失败","fail");}
     }
 
     //将获取到的数据传给体检表页面
