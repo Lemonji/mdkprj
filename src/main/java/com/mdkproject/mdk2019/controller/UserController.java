@@ -56,10 +56,6 @@ public class UserController extends BaseController{
         return CommonReturnType.createCommonReturnType(userInfoVO);
     }
 
-
-
-
-
     //返回给前端
     private UserInfoVO convertUserInfoVOFromUserInfoModel(UserInfoModel userInfoModel){
         UserInfoVO userInfoVO = new UserInfoVO();

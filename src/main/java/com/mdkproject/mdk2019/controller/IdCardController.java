@@ -42,11 +42,11 @@ public class IdCardController {
         System.out.println("请求道理");
         // 首先把字符串转为json对象
         String jsonstr= JSON.toJSONString(data,true);
-        System.out.println(jsonstr);
+        //System.out.println(jsonstr);
         JSONObject jsonObject = JSONObject.parseObject(jsonstr);
         String idCard = jsonObject.getString("idcardnum");      //身份证号
         TbIdcard res = idCardService.selectByIdnum(idCard);
-        System.out.println(res);
+        //System.out.println(res);
         if (res != null) {
             String createtime = res.getCreatetime();
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");

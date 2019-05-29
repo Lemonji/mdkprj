@@ -67,6 +67,9 @@
     delete from tb_tijianinfo
     where tj_id = #{tjId,jdbcType=INTEGER}
   </delete>
+  <delete id="deletetjinfo">
+    delete from tb_tijianinfo where idcard_num=#{str}
+  </delete>
   <insert id="insert" parameterType="com.mdkproject.mdk2019.entity.TijianInfo">
     <!--
       WARNING - @mbg.generated
@@ -260,7 +263,6 @@
     where tj_id = #{tjId,jdbcType=INTEGER}
   </update>
 
-  <!--超复杂的查询-->
   <select id="findbycondition" resultMap="BaseResultMap" parameterType="map">
     SELECT t.*,h.hospital_name,c.create_time,c.health_time,c.medical FROM tb_tijianinfo AS t,tb_hospital as h,tb_hearth_card as c
     WHERE 1=1 AND t.idcard_num=c.id_card AND c.hospital_id=h.hospital_id
@@ -328,8 +330,23 @@
     where number = #{number}
   </update>
 
+  <!--批量上传-->
+    <update id="updatehospital">
+      update tb_tijianinfo set dept_num=(SELECT hospital_num FROM tb_hospital WHERE hospital_name=#{hospitalname})
+      where idcard_num = #{str}
+    </update>
 
-  <!--根据身份证号查询-->
+  <!--动态sql实现批量上传,此方法我未测试-->
+  <!--此方法更好，但你需要改-->
+    <!--<update id="sqlmanyupdate">
+      update tb_tijianinfo set dept_num=(SELECT hospital_num FROM tb_hospital WHERE hospital_name=#{hospitalname})
+      where idcard_num in
+      <foreach collection="list" open="(" item="idnum" separator="," close=")">
+        #{idnum}
+      </foreach>
+    </update>-->
+
+    <!--根据身份证号查询-->
   <select id="selectByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

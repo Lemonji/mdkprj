@@ -3,13 +3,16 @@ package com.mdkproject.mdk2019.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mdkproject.mdk2019.controller.viewobject.TijianInfoVO;
+import com.mdkproject.mdk2019.entity.TbIdcard;
 import com.mdkproject.mdk2019.entity.TijianInfo;
 import com.mdkproject.mdk2019.error.BusinessException;
 import com.mdkproject.mdk2019.error.EmBusinessError;
 import com.mdkproject.mdk2019.response.CommonReturnType;
+import com.mdkproject.mdk2019.services.IdCardService;
 import com.mdkproject.mdk2019.services.TijianInfoService;
 import com.mdkproject.mdk2019.services.TijianProjectService;
 import com.mdkproject.mdk2019.services.model.TijianModel;
+import com.mdkproject.mdk2019.utils.Base64Util;
 import com.mdkproject.mdk2019.utils.SimpledateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,6 +44,9 @@ public class TijianInfoController {
     @Autowired
     private TijianProjectService tjporj;
 
+    @Autowired
+    private IdCardService idCardService;
+
     JSONObject publicjson;
 
     JSONObject cardjson;
@@ -48,7 +56,7 @@ public class TijianInfoController {
     @RequestMapping(value = "/add",method = {RequestMethod.POST},produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public CommonReturnType add(@RequestBody String str) throws BusinessException {
-        System.out.println(str);
+        //System.out.println(str);
         JSONObject jsonObject= JSON.parseObject(str);
         int jssize = 0;
         for (String key : jsonObject.keySet()) {
@@ -65,9 +73,72 @@ public class TijianInfoController {
         if (jssize < 13) {
             return CommonReturnType.createCommonReturnType("参数有误","fail");
         }
-        jsonObject.put("idcardPhtoto","whatever");
         cardjson=jsonObject;
-        System.out.println(jsonObject);
+        //将信息存入身份证信息表，方法与存身份证信息一样
+        JSONObject cardobj=new JSONObject();
+        String idCard = jsonObject.getString("idcardNum");      //身份证号
+        TbIdcard res = idCardService.selectByIdnum(idCard);
+        if (res != null) {
+            String createtime = res.getCreatetime();
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date createdate = sf.parse(createtime);
+                Date nowdate = new Date();
+                GregorianCalendar gc = new GregorianCalendar();
+                gc.setTime(createdate);
+                gc.add(2, 11);
+                Date newdate = gc.getTime();
+                int dateresult = newdate.compareTo(nowdate);
+                if (dateresult > 0) {
+                    return CommonReturnType.createCommonReturnType("有效期未满11个月","fail");
+                }else {
+                    idCardService.deleteByPrimaryKey(res.getHealthNum());
+                    res.setHealthNum(0);
+                    res.setCreatetime(sf.format(nowdate));
+                    int updateres=idCardService.insert(res);
+                    if(updateres!=0){
+                        String jsonstr=JSON.toJSONString(jsonObject);
+                        TijianModel formdata=JSON.parseObject(jsonstr,TijianModel.class);
+                        TijianModel tijianModel = tijianInfoService.save(formdata);
+                        return CommonReturnType.createCommonReturnType(formdata);
+                    }else {
+                        return CommonReturnType.createCommonReturnType("未知错误，上传失败", "fail");
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        String path = "C:\\img\\" + jsonObject.getString("idcardNum") + ".jpg";
+        //将图片存储到本地并转换photo的值为图片路径
+        if (jsonObject.getString("idcardPhtoto") != null) {
+            String basestr = jsonObject.getString("idcardPhtoto");
+            Base64Util.GenerateImage(basestr, path);
+            cardobj.put("photo", path);
+        }
+        //添加其他两个不需要传参的字段
+        cardobj.put("healthNum", 0);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        cardobj.put("createtime", df.format(new Date()));
+        cardobj.put("name",jsonObject.getString("name"));
+        cardobj.put("idcardNum",jsonObject.getString("idcardNum"));
+        cardobj.put("age",jsonObject.getString("age"));
+        cardobj.put("sex",jsonObject.getString("sex"));
+        cardobj.put("address",jsonObject.getString("adress"));
+
+        cardobj.put("nation",jsonObject.getString("nation"));
+        cardobj.put("starttime",jsonObject.getString("starttime"));
+        cardobj.put("endtime",jsonObject.getString("endtime"));
+        cardobj.put("psb",jsonObject.getString("psb"));
+
+        // 直接将json对象转为java对象
+        TbIdcard tbIdcard = cardobj.toJavaObject(TbIdcard.class);
+        int result = idCardService.insert(tbIdcard);
+        if(result==0) {
+            return CommonReturnType.createCommonReturnType("未知错误，上传失败", "fail");
+        }
+
+        //将信息录入体检表
         String jsonstr=JSON.toJSONString(jsonObject);
         TijianModel formdata=JSON.parseObject(jsonstr,TijianModel.class);
         TijianModel tijianModel = tijianInfoService.save(formdata);
@@ -122,7 +193,7 @@ public class TijianInfoController {
     //快速录入
 
 
-    //改变体检审核的结果，新增的默认都是未审核
+    //改变体检审核的结果，单条修改，新增的默认都是未审核
     @PostMapping("/upstatus")
     @ResponseBody
     public CommonReturnType updatetjstatus(@RequestBody String str){
@@ -132,6 +203,48 @@ public class TijianInfoController {
         String number=jsonObject.getString("number");
         int status=jsonObject.getInteger("status");
         return CommonReturnType.createCommonReturnType(tijianInfoService.updateStatus(number,status));
+    }
+
+    //删除单条体检信息
+    @PostMapping("/deletetjinfo")
+    @ResponseBody
+    public CommonReturnType deletetjinfo(@RequestBody String str){
+        int res=0;
+        try {
+            res=tijianInfoService.deletetjinfo(str);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        if(res==0){
+            return  CommonReturnType.createCommonReturnType("删除失败","fail");
+        }else {
+            return CommonReturnType.createCommonReturnType("删除成功");
+        }
+    }
+
+    //改变体检审核单位，批量修改
+    @PostMapping("/uphospitalmany")
+    @ResponseBody
+    public CommonReturnType uphospitalmany(@RequestBody JSONObject jsonstr){
+        List<String> strarr=(List<String>) jsonstr.get("array");
+        String hospitalname=jsonstr.getString("hospital");
+        if(strarr.size()==0){
+            return CommonReturnType.createCommonReturnType("修改失败，未选择修改对象","fail");
+        }
+        List errlist=new ArrayList();
+        for(String str:strarr){
+            try {
+                tijianInfoService.updatehospital(str,hospitalname);
+            } catch (Exception e) {
+                e.printStackTrace();
+                errlist.add(str);
+            }
+        }
+        if(errlist.size()!=0){
+            return CommonReturnType.createCommonReturnType(errlist,"fail");
+        }else {
+            return CommonReturnType.createCommonReturnType("修改成功");
+        }
     }
 
     //查询体检未审核，审核通过，审核未通过的结果

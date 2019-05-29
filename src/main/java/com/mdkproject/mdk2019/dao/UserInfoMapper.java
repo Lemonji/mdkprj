@@ -53,4 +53,7 @@ public interface UserInfoMapper {
      * @mbg.generated Wed Apr 10 11:07:15 CST 2019
      */
     int updateByPrimaryKey(UserInfo record);
+
+    String getUserPassword(String username);
+    String getRole(String username);
 }

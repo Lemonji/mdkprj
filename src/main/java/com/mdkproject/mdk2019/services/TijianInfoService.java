@@ -55,4 +55,8 @@ public interface TijianInfoService {
     List<TijianInfo> getzerolist();
     List<TijianInfo> getonelist();
     List<TijianInfo> gettwolist();
+
+    int updatehospital(String str,String hospitalname);
+
+    int deletetjinfo(String str);
 }

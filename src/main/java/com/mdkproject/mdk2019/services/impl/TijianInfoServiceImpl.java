@@ -214,4 +214,13 @@ public class TijianInfoServiceImpl implements TijianInfoService {
     public List<TijianInfo> gettwolist(){
         return tijianInfoMapper.gettwolist();
     }
+
+    public int updatehospital(String str,String hospitalname){
+        return tijianInfoMapper.updatehospital(str,hospitalname);
+    }
+
+    public int deletetjinfo(String str){
+        return tijianInfoMapper.deletetjinfo(str);
+    }
+
 }
